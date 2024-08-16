@@ -1,21 +1,24 @@
 //go:build !windows
+
 package dnsserver
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/miekg/dns"
-	"github.com/rs/zerolog/log"
 	"net"
 	"strings"
 	"time"
+
+	"github.com/miekg/dns"
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/common"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // DnsServer nds server
 type DnsServer struct {
 	localDomain string
-	config *dns.ClientConfig
+	config      *dns.ClientConfig
 }
 
 // Start setup dns server

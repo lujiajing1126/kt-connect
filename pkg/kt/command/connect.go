@@ -2,25 +2,27 @@ package command
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/clean"
 	"github.com/alibaba/kt-connect/pkg/kt/command/connect"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"strings"
 )
 
 // NewConnectCommand return new connect command
 func NewConnectCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "connect",
+		Use:   "connect",
 		Short: "Create a network tunnel to kubernetes cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
-				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ",") )
+				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ","))
 			}
 			if err := preCheck(); err != nil {
 				return err

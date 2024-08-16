@@ -5,11 +5,13 @@ package dns
 import (
 	"bufio"
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // listen address of systemd-resolved
@@ -59,7 +61,7 @@ func fetchNameServerInConf(resolvConf string) string {
 	defer f.Close()
 
 	scanner := bufio.NewScanner(f)
-	pattern, _ := regexp.Compile(fmt.Sprintf("^%s[ \t]+" + util.IpAddrPattern, util.FieldNameserver))
+	pattern, _ := regexp.Compile(fmt.Sprintf("^%s[ \t]+"+util.IpAddrPattern, util.FieldNameserver))
 	for scanner.Scan() {
 		line := scanner.Text()
 		if pattern.MatchString(line) {

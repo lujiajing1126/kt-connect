@@ -2,17 +2,19 @@ package dns
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/miekg/dns"
-	"github.com/rs/zerolog/log"
 	"net"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/miekg/dns"
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/common"
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 type DnsServer struct {
@@ -28,7 +30,7 @@ func SetupLocalDns(remoteDnsPort, localDnsPort int, dnsOrder []string) error {
 		extraDomains := getIngressDomains()
 		log.Info().Msgf("Setup local DNS with upstream %v", upstreamDnsAddresses)
 		HandleExtraDomainMapping(extraDomains, localDnsPort)
-		res <-common.SetupDnsServer(&DnsServer{upstreamDnsAddresses, extraDomains}, localDnsPort, "udp")
+		res <- common.SetupDnsServer(&DnsServer{upstreamDnsAddresses, extraDomains}, localDnsPort, "udp")
 	}()
 	select {
 	case err := <-res:
@@ -162,7 +164,7 @@ func wildcardMatch(pattenDomain, targetDomain string) bool {
 		pattenDomain = pattenDomain + "."
 	}
 	if strings.Contains(pattenDomain, "*") {
-		ok, err := regexp.MatchString("^" + strings.ReplaceAll(strings.ReplaceAll(pattenDomain, ".", "\\."), "*", ".*") + "$", targetDomain)
+		ok, err := regexp.MatchString("^"+strings.ReplaceAll(strings.ReplaceAll(pattenDomain, ".", "\\."), "*", ".*")+"$", targetDomain)
 		return ok && err == nil
 	} else {
 		return pattenDomain == targetDomain
@@ -170,12 +172,12 @@ func wildcardMatch(pattenDomain, targetDomain string) bool {
 }
 
 func toARecord(domain, ip string) dns.RR {
-	return &dns.A {
-		Hdr: dns.RR_Header {
-			Name: domain,
-			Rrtype: dns.TypeA,
-			Class: dns.ClassINET,
-			Ttl: 5,
+	return &dns.A{
+		Hdr: dns.RR_Header{
+			Name:     domain,
+			Rrtype:   dns.TypeA,
+			Class:    dns.ClassINET,
+			Ttl:      5,
 			Rdlength: 4,
 		},
 		A: net.ParseIP(ip),

@@ -1,7 +1,6 @@
 package options
 
 func ForwardFlags() []OptionConfig {
-	flags := []OptionConfig{
-	}
+	flags := []OptionConfig{}
 	return flags
 }

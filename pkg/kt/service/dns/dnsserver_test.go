@@ -17,24 +17,24 @@ func Test_getDnsAddresses(t *testing.T) {
 	}{
 		{
 			args: args{
-				dnsOrder: []string{"cluster", "upstream", "tcp:upstream", "upstream:123", "tcp:upstream:123"},
-				upstreamDns: "1.2.3.4",
+				dnsOrder:       []string{"cluster", "upstream", "tcp:upstream", "upstream:123", "tcp:upstream:123"},
+				upstreamDns:    "1.2.3.4",
 				clusterDnsPort: 5353,
 			},
 			want: []string{"tcp:127.0.0.1:5353", "udp:1.2.3.4:53", "tcp:1.2.3.4:53", "udp:1.2.3.4:123", "tcp:1.2.3.4:123"},
 		},
 		{
 			args: args{
-				dnsOrder: []string{"7.8.9.0", "tcp:7.8.9.0", "7.8.9.0:123", "tcp:7.8.9.0:123"},
-				upstreamDns: "1.2.3.4",
+				dnsOrder:       []string{"7.8.9.0", "tcp:7.8.9.0", "7.8.9.0:123", "tcp:7.8.9.0:123"},
+				upstreamDns:    "1.2.3.4",
 				clusterDnsPort: 5353,
 			},
 			want: []string{"udp:7.8.9.0:53", "tcp:7.8.9.0:53", "udp:7.8.9.0:123", "tcp:7.8.9.0:123"},
 		},
 		{
 			args: args{
-				dnsOrder: []string{"", "tcp:", ":123", "tcp:7.8.9.0:123:53"},
-				upstreamDns: "1.2.3.4",
+				dnsOrder:       []string{"", "tcp:", ":123", "tcp:7.8.9.0:123:53"},
+				upstreamDns:    "1.2.3.4",
 				clusterDnsPort: 5353,
 			},
 			want: []string{"udp::53", "tcp::53", "udp::123"},

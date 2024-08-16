@@ -5,18 +5,19 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"io"
 	"net"
 	"strings"
 	"time"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 
 	"github.com/rs/zerolog/log"
 	"github.com/wzshiming/socks5"
 	"github.com/wzshiming/sshproxy"
 )
 
-type SocksLogger struct {}
+type SocksLogger struct{}
 
 func (s SocksLogger) Println(v ...any) {
 	_, _ = util.BackgroundLogger.Write([]byte(fmt.Sprint(v...) + util.Eol))
@@ -157,7 +158,7 @@ func handleClient(client net.Conn, remote net.Conn) {
 		if _, err := io.Copy(client, remoteReader); err != nil {
 			log.Warn().Err(err).Msgf("Error while copy remote->local")
 		}
-		done<-1
+		done <- 1
 	}()
 
 	// Start local -> remote data transfer
@@ -167,7 +168,7 @@ func handleClient(client net.Conn, remote net.Conn) {
 		if _, err := io.Copy(remote, localReader); err != nil {
 			log.Warn().Err(err).Msgf("Error while copy local->remote")
 		}
-		done<-1
+		done <- 1
 	}()
 
 	<-done
@@ -180,6 +181,6 @@ func handleClient(client net.Conn, remote net.Conn) {
 func handleBrokenTunnel(done chan int) {
 	if r := recover(); r != nil {
 		log.Error().Msgf("Ssh tunnel broken: %v", r)
-		done<-1
+		done <- 1
 	}
 }

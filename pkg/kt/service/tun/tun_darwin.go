@@ -2,12 +2,14 @@ package tun
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"net"
 	"os/exec"
 	"strconv"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // CheckContext check everything needed for tun setup
@@ -112,6 +114,7 @@ func (s *Cli) RestoreRoute() error {
 }
 
 var tunName = ""
+
 func (s *Cli) GetName() string {
 	if tunName != "" {
 		return tunName
@@ -126,7 +129,7 @@ func (s *Cli) GetName() string {
 				}
 			}
 		}
-		tunName = fmt.Sprintf("%s%d", util.TunNameMac, tunN + 1)
+		tunName = fmt.Sprintf("%s%d", util.TunNameMac, tunN+1)
 	}
 	return tunName
 }

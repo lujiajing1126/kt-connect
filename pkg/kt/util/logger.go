@@ -1,7 +1,6 @@
 package util
 
 import (
-	"github.com/rs/zerolog/log"
 	"io"
 	"io/fs"
 	"io/ioutil"
@@ -9,6 +8,8 @@ import (
 	"path"
 	"strings"
 	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 const logFilePrefix = "kt-"
@@ -58,5 +59,5 @@ func CleanBackgroundLogs() {
 
 // isExpired check whether file haven't been modified over 24 hours
 func isExpired(info fs.FileInfo) bool {
-	return info.ModTime().Unix() < time.Now().Unix() - (3600 * 24)
+	return info.ModTime().Unix() < time.Now().Unix()-(3600*24)
 }

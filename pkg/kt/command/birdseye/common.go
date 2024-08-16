@@ -2,12 +2,14 @@ package birdseye
 
 import (
 	"fmt"
+	"strings"
+
+	appV1 "k8s.io/api/apps/v1"
+	coreV1 "k8s.io/api/core/v1"
+
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	appV1 "k8s.io/api/apps/v1"
-	coreV1 "k8s.io/api/core/v1"
-	"strings"
 )
 
 const UnknownUser = "unknown user"
@@ -47,7 +49,7 @@ func GetKtPodsAndDeployments() ([]coreV1.Pod, []appV1.Deployment, error) {
 }
 
 func GetConnectors(pods []coreV1.Pod, apps []appV1.Deployment) []string {
-	users:= make([]string, 0)
+	users := make([]string, 0)
 	for _, pod := range pods {
 		if user := checkConnector(pod.Annotations); user != "" {
 			users = append(users, user)
@@ -71,7 +73,7 @@ func GetServiceStatus(ktSvcs []coreV1.Service, pods []coreV1.Pod, svcs []coreV1.
 			}
 		}
 	}
-	svcLoop:
+svcLoop:
 	for _, svc := range svcs {
 		for _, p := range pods {
 			if util.MapContains(svc.Spec.Selector, p.Labels) {
@@ -80,7 +82,7 @@ func GetServiceStatus(ktSvcs []coreV1.Service, pods []coreV1.Pod, svcs []coreV1.
 					continue svcLoop
 				} else if role == util.RoleRouter {
 					allServices = append(allServices, []string{svc.Name, "meshed (auto) by " +
-						getMeshedUserNames(ktSvcs, pods, svc.Name + util.MeshPodInfix)})
+						getMeshedUserNames(ktSvcs, pods, svc.Name+util.MeshPodInfix)})
 					continue svcLoop
 				} else if role == util.RoleMeshShadow {
 					allServices = append(allServices, []string{svc.Name, "meshed (manual) by " +

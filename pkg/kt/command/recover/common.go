@@ -2,16 +2,17 @@ package recover
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	appV1 "k8s.io/api/apps/v1"
-	coreV1 "k8s.io/api/core/v1"
 	"strconv"
 	"strings"
 	"time"
-)
 
+	"github.com/rs/zerolog/log"
+	appV1 "k8s.io/api/apps/v1"
+	coreV1 "k8s.io/api/core/v1"
+
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
+)
 
 func UnlockServiceOnly(svc *coreV1.Service) error {
 	_, err := cluster.Ins().UpdateService(svc)
@@ -66,8 +67,8 @@ func HandleMeshedByAutoService(svc *coreV1.Service, deployment *appV1.Deployment
 	if _, err := cluster.Ins().UpdateService(svc); err != nil {
 		return err
 	}
-	log.Info().Msgf("Deleting stuntman service %s", svc.Name + util.StuntmanServiceSuffix)
-	if err := cluster.Ins().RemoveService(svc.Name + util.StuntmanServiceSuffix, svc.Namespace); err != nil {
+	log.Info().Msgf("Deleting stuntman service %s", svc.Name+util.StuntmanServiceSuffix)
+	if err := cluster.Ins().RemoveService(svc.Name+util.StuntmanServiceSuffix, svc.Namespace); err != nil {
 		log.Debug().Err(err).Msgf("Failed to remove service %s", svc.Name)
 	}
 	shadowLabels := map[string]string{
@@ -77,7 +78,7 @@ func HandleMeshedByAutoService(svc *coreV1.Service, deployment *appV1.Deployment
 	shadowSvcNames := make([]string, 0)
 	if apps, err := cluster.Ins().GetDeploymentsByLabel(shadowLabels, svc.Namespace); err == nil {
 		for _, shadowApp := range apps.Items {
-			if strings.HasPrefix(shadowApp.Name, svc.Name + util.MeshPodInfix) {
+			if strings.HasPrefix(shadowApp.Name, svc.Name+util.MeshPodInfix) {
 				log.Info().Msgf("Deleting shadow deployment %s", shadowApp.Name)
 				if err2 := cluster.Ins().RemoveDeployment(shadowApp.Name, shadowApp.Namespace); err2 != nil {
 					log.Debug().Err(err2).Msgf("Failed to remove deployment %s", shadowApp.Name)
@@ -88,7 +89,7 @@ func HandleMeshedByAutoService(svc *coreV1.Service, deployment *appV1.Deployment
 	}
 	if pods, err := cluster.Ins().GetPodsByLabel(shadowLabels, svc.Namespace); err == nil {
 		for _, shadowPod := range pods.Items {
-			if strings.HasPrefix(shadowPod.Name, svc.Name + util.MeshPodInfix) && shadowPod.DeletionTimestamp == nil {
+			if strings.HasPrefix(shadowPod.Name, svc.Name+util.MeshPodInfix) && shadowPod.DeletionTimestamp == nil {
 				log.Info().Msgf("Deleting shadow pod %s", shadowPod.Name)
 				if err2 := cluster.Ins().RemovePod(shadowPod.Name, shadowPod.Namespace); err2 != nil {
 					log.Debug().Err(err2).Msgf("Failed to remove pod %s", pod.Name)
@@ -120,4 +121,3 @@ func HandleServiceSelectorAndRemotePods(svc *coreV1.Service, deployment *appV1.D
 	}
 	return nil
 }
-

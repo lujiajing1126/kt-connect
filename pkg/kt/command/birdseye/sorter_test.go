@@ -2,8 +2,9 @@ package birdseye
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/require"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestSortServiceArray(t *testing.T) {
@@ -52,7 +53,7 @@ func TestSortServiceArray(t *testing.T) {
 				sortIndex = 1
 			}
 			for i := 0; i < len(tt.args.svc); i++ {
-				require.Equal(t, fmt.Sprintf("%d", i + 1), tt.args.svc[i][sortIndex])
+				require.Equal(t, fmt.Sprintf("%d", i+1), tt.args.svc[i][sortIndex])
 			}
 		})
 	}

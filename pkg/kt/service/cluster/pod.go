@@ -4,10 +4,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"io"
+	"net/url"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
 	coreV1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -16,11 +20,9 @@ import (
 	"k8s.io/client-go/kubernetes/scheme"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/remotecommand"
-	"net/url"
-	"regexp"
-	"strconv"
-	"strings"
-	"time"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // PodMetaAndSpec ...

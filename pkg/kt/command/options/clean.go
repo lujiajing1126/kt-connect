@@ -8,7 +8,7 @@ func CleanFlags() []OptionConfig {
 	flags := []OptionConfig{
 		{
 			Target:       "ThresholdInMinus",
-			DefaultValue: util.ResourceHeartBeatIntervalMinus * 2 + 1,
+			DefaultValue: util.ResourceHeartBeatIntervalMinus*2 + 1,
 			Description:  "Length of allowed disconnection time before a unavailing shadow pod be deleted",
 		},
 		{

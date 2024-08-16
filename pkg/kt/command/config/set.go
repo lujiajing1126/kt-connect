@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
 func Set(args []string) error {
@@ -44,7 +45,7 @@ func setConfigValue(config map[string]map[string]string, key string, value strin
 	if _, exist := config[group]; exist {
 		config[group][item] = value
 	} else {
-		config[group] = map[string]string { item: value }
+		config[group] = map[string]string{item: value}
 	}
 	return nil
 }
@@ -53,7 +54,7 @@ func setConfigValidator(cmd *cobra.Command, args []string, toComplete string) ([
 	var items []string
 	if len(args) == 0 {
 		travelConfigItem(func(groupName string, itemName string) {
-			items = append(items, groupName + "." + itemName)
+			items = append(items, groupName+"."+itemName)
 		})
 	}
 	return items, cobra.ShellCompDirectiveNoFileComp

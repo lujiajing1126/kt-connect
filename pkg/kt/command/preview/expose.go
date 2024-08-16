@@ -2,12 +2,14 @@ package preview
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/transmission"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"strings"
 )
 
 // Expose create a new service in cluster
@@ -15,8 +17,8 @@ func Expose(serviceName string) error {
 	version := strings.ToLower(util.RandomString(5))
 	shadowPodName := fmt.Sprintf("%s-kt-%s", serviceName, version)
 	labels := map[string]string{
-		util.KtRole:    util.RolePreviewShadow,
-		util.KtTarget:  util.RandomString(20),
+		util.KtRole:   util.RolePreviewShadow,
+		util.KtTarget: util.RandomString(20),
 	}
 	annotations := map[string]string{
 		util.KtConfig: fmt.Sprintf("service=%s", serviceName),

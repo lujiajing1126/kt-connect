@@ -2,8 +2,6 @@ package util
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"os"
 	"os/user"
@@ -11,6 +9,10 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/common"
 
 	fs "github.com/fsnotify/fsnotify"
 	ps "github.com/mitchellh/go-ps"
@@ -78,9 +80,9 @@ func watchPidFile(pidFile string, ch chan os.Signal) {
 
 	for event := range watcher.Events {
 		log.Debug().Msgf("Received event %s", event)
-		if event.Op & fs.Remove == fs.Remove || event.Op & fs.Rename == fs.Rename {
+		if event.Op&fs.Remove == fs.Remove || event.Op&fs.Rename == fs.Rename {
 			log.Info().Msgf("Pid file was removed")
-			ch <-os.Interrupt
+			ch <- os.Interrupt
 		}
 	}
 }

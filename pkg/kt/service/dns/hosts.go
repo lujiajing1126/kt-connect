@@ -4,15 +4,17 @@ import (
 	"bufio"
 	"context"
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/gofrs/flock"
-	"github.com/rs/zerolog/log"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/gofrs/flock"
+	"github.com/rs/zerolog/log"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 const ktHostsEscapeBegin = "# Kt Hosts Begin"
@@ -157,9 +159,9 @@ func loadHostsFile() ([]string, error) {
 
 func updateHostsFile(lines []string) error {
 	lock := flock.New(fmt.Sprintf("%s/hosts.lock", util.KtLockDir))
-	timeoutContext, cancel := context.WithTimeout(context.TODO(), 2 * time.Second)
+	timeoutContext, cancel := context.WithTimeout(context.TODO(), 2*time.Second)
 	defer cancel()
-	if ok, err := lock.TryLockContext(timeoutContext, 100 * time.Millisecond); !ok {
+	if ok, err := lock.TryLockContext(timeoutContext, 100*time.Millisecond); !ok {
 		return fmt.Errorf("failed to require hosts lock")
 	} else if err != nil {
 		log.Error().Err(err).Msgf("require hosts file failed with error")

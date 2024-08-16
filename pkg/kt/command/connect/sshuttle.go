@@ -1,14 +1,16 @@
 package connect
 
 import (
+	"time"
+
+	"github.com/rs/zerolog/log"
+
 	"github.com/alibaba/kt-connect/pkg/common"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/sshuttle"
 	"github.com/alibaba/kt-connect/pkg/kt/transmission"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"time"
 )
 
 func BySshuttle() error {

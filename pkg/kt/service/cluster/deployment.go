@@ -2,13 +2,15 @@ package cluster
 
 import (
 	"context"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"strconv"
+
 	"github.com/rs/zerolog/log"
 	appV1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labelApi "k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/types"
-	"strconv"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // GetDeployment ...

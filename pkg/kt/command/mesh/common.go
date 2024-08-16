@@ -1,10 +1,12 @@
 package mesh
 
 import (
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"regexp"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func getVersion(versionMark string) (string, string) {

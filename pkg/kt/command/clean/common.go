@@ -2,19 +2,21 @@ package clean
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strconv"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	appV1 "k8s.io/api/apps/v1"
+	coreV1 "k8s.io/api/core/v1"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
 	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"io/ioutil"
-	appV1 "k8s.io/api/apps/v1"
-	coreV1 "k8s.io/api/core/v1"
-	"os"
-	"strconv"
-	"strings"
 )
 
 type ResourceToClean struct {
@@ -24,9 +26,8 @@ type ResourceToClean struct {
 	DeploymentsToDelete []string
 	DeploymentsToScale  map[string]int32
 	ServicesToRecover   []string
-	ServicesToUnlock   []string
+	ServicesToUnlock    []string
 }
-
 
 func CheckClusterResources() (*ResourceToClean, error) {
 	pods, cfs, apps, svcs, err := cluster.Ins().GetKtResources(opt.Get().Global.Namespace)
@@ -201,7 +202,7 @@ func parseComponentAndPid(pidFileName string) (string, int) {
 	startPos := strings.LastIndex(pidFileName, "-")
 	endPos := strings.Index(pidFileName, ".")
 	if startPos > 0 && endPos > startPos {
-		component := pidFileName[0 : startPos]
+		component := pidFileName[0:startPos]
 		pid, err := strconv.Atoi(pidFileName[startPos+1 : endPos])
 		if err != nil {
 			return "", -1
@@ -257,7 +258,7 @@ func analysisLockAndOrphanServices(svcs []coreV1.Service, resourceToClean *Resou
 		if svc.Annotations == nil {
 			continue
 		}
-		if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime() - util.ParseTimestamp(lock) > general.LockTimeout {
+		if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime()-util.ParseTimestamp(lock) > general.LockTimeout {
 			resourceToClean.ServicesToUnlock = append(resourceToClean.ServicesToUnlock, svc.Name)
 		}
 		if svc.Annotations[util.KtSelector] != "" {
@@ -314,6 +315,5 @@ func isRouterPodExist(svcName, namespace string) bool {
 }
 
 func isExpired(lastHeartBeat, cleanThresholdInMinus int64) bool {
-	return util.GetTime() - lastHeartBeat > cleanThresholdInMinus*60
+	return util.GetTime()-lastHeartBeat > cleanThresholdInMinus*60
 }
-

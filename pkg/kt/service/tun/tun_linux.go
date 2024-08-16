@@ -2,10 +2,12 @@ package tun
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"os/exec"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // CheckContext check everything needed for tun setup

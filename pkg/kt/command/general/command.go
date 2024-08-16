@@ -1,13 +1,14 @@
 package general
 
 import (
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/spf13/cobra"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 )
 
 func SimpleSubCommand(name, usage string, action func(args []string) error, postHandler func(cmd *cobra.Command)) *cobra.Command {
 	cmd := &cobra.Command{
-		Use: name,
+		Use:   name,
 		Short: usage,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)

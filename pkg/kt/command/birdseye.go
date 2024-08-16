@@ -2,13 +2,15 @@ package command
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/birdseye"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"strings"
 )
 
 // NewBirdseyeCommand show a summary of cluster service network
@@ -18,7 +20,7 @@ func NewBirdseyeCommand() *cobra.Command {
 		Short: "Show summary of services status in cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
-				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ",") )
+				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},

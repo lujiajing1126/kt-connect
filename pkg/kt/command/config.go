@@ -1,16 +1,17 @@
 package command
 
 import (
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/config"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/spf13/cobra"
 )
 
 // NewConfigCommand return new config command
 func NewConfigCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "config",
+		Use:   "config",
 		Short: "List, get or set default value for command options",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)

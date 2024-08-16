@@ -2,25 +2,27 @@ package command
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	"github.com/alibaba/kt-connect/pkg/kt/command/mesh"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"strings"
 )
 
 // NewMeshCommand return new mesh command
 func NewMeshCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "mesh",
+		Use:   "mesh",
 		Short: "Redirect marked requests of specified kubernetes service to local",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to mesh is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ",") )
+				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
@@ -35,7 +37,7 @@ func NewMeshCommand() *cobra.Command {
 	return cmd
 }
 
-//Mesh exchange kubernetes workload
+// Mesh exchange kubernetes workload
 func Mesh(resourceName string) error {
 	ch, err := general.SetupProcess(util.ComponentMesh)
 	if err != nil {
@@ -48,7 +50,7 @@ func Mesh(resourceName string) error {
 		}
 	}
 
-  // Get service to mesh
+	// Get service to mesh
 	svc, err := general.GetServiceByResourceName(resourceName, opt.Get().Global.Namespace)
 	if err != nil {
 		return err
@@ -76,4 +78,3 @@ func Mesh(resourceName string) error {
 	log.Info().Msgf("Terminal Signal is %s", s)
 	return nil
 }
-

@@ -2,12 +2,14 @@ package dns
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"os/exec"
 	"regexp"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/common"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // SetNameServer set dns server records

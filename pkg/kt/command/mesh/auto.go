@@ -2,17 +2,19 @@ package mesh
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/command/general"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/rs/zerolog/log"
 	coreV1 "k8s.io/api/core/v1"
 	k8sErrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"strconv"
-	"strings"
-	"time"
+
+	"github.com/alibaba/kt-connect/pkg/kt/command/general"
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func AutoMesh(svc *coreV1.Service) error {
@@ -78,7 +80,7 @@ func AutoMesh(svc *coreV1.Service) error {
 	// Must after stuntman service and shadow service, otherwise will cause 'host not found in upstream' error
 	routerPodName := svc.Name + util.RouterPodSuffix
 	routerLabels := map[string]string{
-		util.KtRole:   util.RoleRouter,
+		util.KtRole: util.RoleRouter,
 	}
 	if err = createRouter(routerPodName, svc.Name, ports, routerLabels, versionMark); err != nil {
 		return err
@@ -116,11 +118,11 @@ func isNameUsable(name, meshVersion string, times int) error {
 			if opt.Get().Mesh.VersionMark != "" {
 				return fmt.Errorf("%s, please specify a different version mark", msg)
 			}
-			return fmt.Errorf( "%s, please retry or use '--versionMark' parameter to spcify an uniq one", msg)
+			return fmt.Errorf("%s, please retry or use '--versionMark' parameter to spcify an uniq one", msg)
 		}
 		log.Info().Msgf("Previous meshing pod for service '%s' not finished yet, waiting ...", name)
 		time.Sleep(3 * time.Second)
-		return isNameUsable(name, meshVersion, times + 1)
+		return isNameUsable(name, meshVersion, times+1)
 	}
 	return nil
 }

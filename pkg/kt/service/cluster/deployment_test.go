@@ -1,11 +1,12 @@
 package cluster
 
 import (
+	"testing"
+
 	appv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	testclient "k8s.io/client-go/kubernetes/fake"
-	"testing"
 )
 
 func TestKubernetes_ScaleTo(t *testing.T) {
@@ -33,7 +34,7 @@ func TestKubernetes_ScaleTo(t *testing.T) {
 						Name:      "app",
 						Namespace: "default",
 					},
-					Spec: appv1.DeploymentSpec {
+					Spec: appv1.DeploymentSpec{
 						Replicas: func() *int32 {
 							i := int32(0)
 							return &i

@@ -2,9 +2,10 @@ package config
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 func DropProfile(args []string) error {

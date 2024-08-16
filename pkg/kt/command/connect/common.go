@@ -2,16 +2,18 @@ package connect
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
+	coreV1 "k8s.io/api/core/v1"
+
 	"github.com/alibaba/kt-connect/pkg/common"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
 	"github.com/alibaba/kt-connect/pkg/kt/transmission"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	coreV1 "k8s.io/api/core/v1"
-	"strings"
-	"time"
 )
 
 func setupDns(shadowPodName, shadowPodIp string) error {
@@ -19,7 +21,7 @@ func setupDns(shadowPodName, shadowPodIp string) error {
 		log.Info().Msgf("Setting up dns in hosts mode")
 		dump2HostsNamespaces := ""
 		pos := len(util.DnsModeHosts)
-		if len(opt.Get().Connect.DnsMode) > pos + 1 && opt.Get().Connect.DnsMode[pos:pos+1] == ":" {
+		if len(opt.Get().Connect.DnsMode) > pos+1 && opt.Get().Connect.DnsMode[pos:pos+1] == ":" {
 			dump2HostsNamespaces = opt.Get().Connect.DnsMode[pos+1:]
 		}
 		if err := dumpToHost(dump2HostsNamespaces); err != nil {
@@ -62,8 +64,8 @@ func setupDns(shadowPodName, shadowPodIp string) error {
 }
 
 func getDnsOrder(dnsMode string) []string {
-	if ! strings.Contains(dnsMode, ":") {
-		return []string{ util.DnsOrderCluster, util.DnsOrderUpstream }
+	if !strings.Contains(dnsMode, ":") {
+		return []string{util.DnsOrderCluster, util.DnsOrderUpstream}
 	}
 	return strings.Split(strings.SplitN(dnsMode, ":", 2)[1], ",")
 }
@@ -73,7 +75,7 @@ func watchServicesAndPods(namespace string, svcToIp map[string]string, headlessP
 	go cluster.Ins().WatchService("", namespace,
 		func(svc *coreV1.Service) {
 			// ignore add service event during watch setup
-			if time.Now().Unix() - setupTime > 3 {
+			if time.Now().Unix()-setupTime > 3 {
 				svcToIp, headlessPods = getServiceHosts(namespace, shortDomainOnly)
 				_ = dns.DumpHosts(svcToIp, namespace)
 			}
@@ -186,7 +188,7 @@ func getEnvs() map[string]string {
 
 func getLabels() map[string]string {
 	labels := map[string]string{
-		util.KtRole:    util.RoleConnectShadow,
+		util.KtRole: util.RoleConnectShadow,
 	}
 	if opt.Get().Global.UseShadowDeployment {
 		labels[util.KtTarget] = util.RandomString(20)

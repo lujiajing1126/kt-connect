@@ -2,9 +2,12 @@ package general
 
 import (
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"os"
+	"os/signal"
+	"runtime"
+	"strings"
+	"syscall"
+
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	k8sRuntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -12,11 +15,10 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	"k8s.io/klog/v2"
-	"os"
-	"os/signal"
-	"runtime"
-	"syscall"
-	"strings"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // Prepare setup log level, time difference and kube config
@@ -64,7 +66,7 @@ func SetupProcess(componentName string) (chan os.Signal, error) {
 // combineKubeOpts set default options of kubectl if not assign
 func combineKubeOpts() (err error) {
 	var config *clientcmdapi.Config
-	if opt.Get().Global.Kubeconfig != ""{
+	if opt.Get().Global.Kubeconfig != "" {
 		// if kubeconfig specified, always read from it
 		_ = os.Setenv(util.EnvKubeConfig, opt.Get().Global.Kubeconfig)
 		config, err = clientcmd.NewDefaultClientConfigLoadingRules().Load()

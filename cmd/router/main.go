@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/router"
+	"os"
+	"strings"
+
 	"github.com/gofrs/flock"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
-	"os"
-	"strings"
+
+	"github.com/alibaba/kt-connect/pkg/router"
 )
 
 func init() {
@@ -91,7 +93,7 @@ func remove(args []string) {
 	header, version := splitVersionMark(args[0])
 	err := updateRoute(header, version, actionRemove)
 	if err != nil {
-		log.Error().Err(err).Msgf("Update route with remove failed" )
+		log.Error().Err(err).Msgf("Update route with remove failed")
 		return
 	}
 	log.Info().Msgf("Route updated.")

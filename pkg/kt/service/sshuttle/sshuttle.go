@@ -2,12 +2,13 @@ package sshuttle
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"io"
 	"os"
 	"os/exec"
+
+	"github.com/alibaba/kt-connect/pkg/common"
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // Version check sshuttle version

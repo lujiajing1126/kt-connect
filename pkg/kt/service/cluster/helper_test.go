@@ -1,9 +1,10 @@
 package cluster
 
 import (
-	"k8s.io/client-go/kubernetes"
 	"reflect"
 	"testing"
+
+	"k8s.io/client-go/kubernetes"
 )
 
 func Test_getKubernetesClient(t *testing.T) {

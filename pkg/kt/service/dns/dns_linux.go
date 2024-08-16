@@ -4,10 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/common"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -15,6 +11,12 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+
+	"github.com/rs/zerolog/log"
+
+	"github.com/alibaba/kt-connect/pkg/common"
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 const (
@@ -34,7 +36,7 @@ func SetNameServer(dnsServer string) error {
 		}()
 		if strings.HasPrefix(opt.Get().Connect.DnsMode, util.DnsModeLocalDns) {
 			if err := setupIptables(); err != nil {
-				dnsSignal <-err
+				dnsSignal <- err
 				return
 			}
 		}
