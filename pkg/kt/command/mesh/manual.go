@@ -1,11 +1,12 @@
 package mesh
 
 import (
+	"github.com/rs/zerolog/log"
+	coreV1 "k8s.io/api/core/v1"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	coreV1 "k8s.io/api/core/v1"
 )
 
 func ManualMesh(svc *coreV1.Service) error {

@@ -2,14 +2,16 @@ package command
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/forward"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"strconv"
-	"strings"
 )
 
 // NewForwardCommand return new Forward command
@@ -23,7 +25,7 @@ func NewForwardCommand() *cobra.Command {
 			} else if len(args) == 1 && strings.Contains(args[0], ".") {
 				return fmt.Errorf("a port must be specified because '%s' is not a service name", args[0])
 			} else if len(args) > 2 {
-				return fmt.Errorf("too many target addresses are spcified (%s)", strings.Join(args, ",") )
+				return fmt.Errorf("too many target addresses are spcified (%s)", strings.Join(args, ","))
 			}
 			opt.Get().Global.UseLocalTime = true
 			return general.Prepare()

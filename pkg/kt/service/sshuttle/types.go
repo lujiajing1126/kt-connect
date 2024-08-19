@@ -21,7 +21,8 @@ type SSHVPNRequest struct {
 }
 
 // Cli the singleton type
-type Cli struct {}
+type Cli struct{}
+
 var instance *Cli
 
 // Ins get singleton instance

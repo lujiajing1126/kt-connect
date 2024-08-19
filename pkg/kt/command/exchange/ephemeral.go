@@ -2,17 +2,19 @@ package exchange
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
+	coreV1 "k8s.io/api/core/v1"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/sshchannel"
 	"github.com/alibaba/kt-connect/pkg/kt/transmission"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	coreV1 "k8s.io/api/core/v1"
-	"strconv"
-	"strings"
-	"time"
 )
 
 func ByEphemeralContainer(resourceName string) error {
@@ -44,7 +46,6 @@ func ByEphemeralContainer(resourceName string) error {
 	}
 	return nil
 }
-
 
 func getPodsOfResource(resourceName, namespace string) ([]coreV1.Pod, error) {
 	resourceType, name, err := general.ParseResourceName(resourceName)
@@ -149,7 +150,6 @@ func exchangeWithEphemeralContainer(exposePorts string, localSSHPort int, privat
 	return nil
 }
 
-
 func setupIptables(redirectPorts string, localSSHPort int, privateKey string) error {
 	res, err := sshchannel.Ins().RunScript(
 		privateKey,
@@ -221,4 +221,3 @@ func randPort(listenedPorts map[int]struct{}) int {
 	}
 	return -1
 }
-

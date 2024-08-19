@@ -7,7 +7,7 @@ NAVIGATOR_IMAGE	  =  kt-connect-navigator
 
 # run mod tidy
 mod:
-	go mod tidy -compat=1.17
+	go mod tidy
 
 # run unit test
 test:

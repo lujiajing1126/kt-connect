@@ -1,20 +1,22 @@
 package options
 
 import (
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/spf13/cobra"
-	flag "github.com/spf13/pflag"
 	"reflect"
 	"unsafe"
+
+	"github.com/spf13/cobra"
+	flag "github.com/spf13/pflag"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 type OptionConfig struct {
-	Target string
-	Alias string
+	Target       string
+	Alias        string
 	DefaultValue any
-	Description string
-	Hidden bool
-	Required bool
+	Description  string
+	Hidden       bool
+	Required     bool
 }
 
 func SetOptions(cmd *cobra.Command, flags *flag.FlagSet, optionStore any, config []OptionConfig) {

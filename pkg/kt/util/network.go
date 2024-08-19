@@ -2,11 +2,12 @@ package util
 
 import (
 	"fmt"
-	"github.com/rs/zerolog/log"
 	"net"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
 
 const IpAddrPattern = "[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+"
@@ -89,7 +90,7 @@ func FindInvalidRemotePort(exposePorts string, svcPorts map[int]string) string {
 
 // IsValidIp check if specified ip address valid
 func IsValidIp(ip string) bool {
-	if ok, err := regexp.MatchString("^" + IpAddrPattern + "$", ip); ok && err == nil {
+	if ok, err := regexp.MatchString("^"+IpAddrPattern+"$", ip); ok && err == nil {
 		return true
 	}
 	return false

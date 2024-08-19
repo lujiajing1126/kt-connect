@@ -2,16 +2,18 @@ package config
 
 import (
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"reflect"
 	"regexp"
 	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 var profileNamePattern, _ = regexp.Compile("^[a-zA-Z0-9-_.]+$")
@@ -74,7 +76,7 @@ func travelConfigItem(callback func(string, string)) {
 	for i := 0; i < reflect.TypeOf(opt.DaemonOptions{}).NumField(); i++ {
 		group := reflect.TypeOf(opt.DaemonOptions{}).Field(i)
 		groupName := util.DashSeparated(group.Name)
-		for j := 0; j < group.Type.Elem().NumField(); j ++ {
+		for j := 0; j < group.Type.Elem().NumField(); j++ {
 			item := group.Type.Elem().Field(j)
 			itemName := util.DashSeparated(item.Name)
 			callback(groupName, itemName)
@@ -87,7 +89,7 @@ func configValidator(cmd *cobra.Command, args []string, toComplete string) ([]st
 	if content, err := loadConfig(); err == nil {
 		for t, kv := range content {
 			for k, _ := range kv {
-				items = append(items, t + "." + k)
+				items = append(items, t+"."+k)
 			}
 		}
 	}

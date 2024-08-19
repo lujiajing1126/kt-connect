@@ -2,15 +2,16 @@ package common
 
 import (
 	"fmt"
-	"github.com/miekg/dns"
-	"github.com/rs/zerolog/log"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/miekg/dns"
+	"github.com/rs/zerolog/log"
 )
 
 type NsEntry struct {
-	answer []dns.RR
+	answer    []dns.RR
 	timestamp int64
 }
 
@@ -21,8 +22,8 @@ var nsCache = sync.Map{}
 func SetupDnsServer(dnsHandler dns.Handler, port int, net string) error {
 	log.Info().Msgf("Creating %s dns on port %d", net, port)
 	srv := &dns.Server{
-		Addr: ":" + strconv.Itoa(port),
-		Net: net,
+		Addr:    ":" + strconv.Itoa(port),
+		Net:     net,
 		Handler: dnsHandler,
 	}
 	// process will hang at here
@@ -62,7 +63,7 @@ func WriteCache(domain string, qtype uint16, answer []dns.RR, timestamp int64) {
 }
 
 func notExpired(timestamp int64, ttl int64) bool {
-	return time.Now().Unix() < timestamp + ttl
+	return time.Now().Unix() < timestamp+ttl
 }
 
 func getCacheKey(domain string, qtype uint16) string {

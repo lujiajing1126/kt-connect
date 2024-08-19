@@ -2,10 +2,11 @@ package util
 
 import (
 	"crypto/rsa"
-	"github.com/stretchr/testify/require"
 	"math/big"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenerate(t *testing.T) {
@@ -38,7 +39,7 @@ func TestGenerate(t *testing.T) {
 			got, err := Generate(tt.args.privateKeyPath)
 			require.Equal(t, err != nil, tt.wantErr, "Generate() error = %v, wantErr %v", err, tt.wantErr)
 			require.NotEmpty(t, got.PrivateKey, "fail generate private key")
-			require.NotEmpty(t, got.PublicKey,"fail generate public key")
+			require.NotEmpty(t, got.PublicKey, "fail generate public key")
 		})
 	}
 }
@@ -48,8 +49,8 @@ func Test_generatePrivateKey(t *testing.T) {
 		bitSize int
 	}
 	tests := []struct {
-		name    string
-		args    args
+		name string
+		args args
 	}{
 		{
 			name: "should generate rsa key",
@@ -81,7 +82,7 @@ func Test_encodePublicKey(t *testing.T) {
 				N: big.NewInt(7456871076443426339),
 				E: 65537},
 			},
-			want: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAACGd8ILxfS44j\n",
+			want:    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAACGd8ILxfS44j\n",
 			wantErr: false,
 		},
 	}

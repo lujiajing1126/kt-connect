@@ -1,8 +1,9 @@
 package options
 
 import (
-	"github.com/alibaba/kt-connect/hack"
 	"strings"
+
+	"github.com/alibaba/kt-connect/hack"
 )
 
 func GetCustomizeKubeConfig() (string, bool) {

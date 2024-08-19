@@ -2,11 +2,13 @@ package general
 
 import (
 	"fmt"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"time"
+
 	"github.com/rs/zerolog/log"
 	coreV1 "k8s.io/api/core/v1"
-	"time"
+
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // LockTimeout 3 minutes
@@ -24,15 +26,15 @@ func LockService(serviceName, namespace string, times int) (*coreV1.Service, err
 	if svc.Annotations == nil {
 		svc.Annotations = make(map[string]string)
 	}
-	if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime() - util.ParseTimestamp(lock) < LockTimeout {
+	if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime()-util.ParseTimestamp(lock) < LockTimeout {
 		log.Info().Msgf("Another user is occupying service %s, waiting for lock ...", serviceName)
 		time.Sleep(3 * time.Second)
-		return LockService(serviceName, namespace, times + 1)
+		return LockService(serviceName, namespace, times+1)
 	} else {
 		svc.Annotations[util.KtLock] = util.GetTimestamp()
 		if svc, err = cluster.Ins().UpdateService(svc); err != nil {
 			log.Warn().Err(err).Msgf("Failed to lock service %s", serviceName)
-			return LockService(serviceName, namespace, times + 1)
+			return LockService(serviceName, namespace, times+1)
 		}
 	}
 	log.Info().Msgf("Service %s locked", serviceName)

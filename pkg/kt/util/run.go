@@ -2,8 +2,9 @@ package util
 
 import (
 	"bytes"
-	"github.com/rs/zerolog/log"
 	"os/exec"
+
+	"github.com/rs/zerolog/log"
 )
 
 // RunAndWait run cmd
@@ -33,7 +34,7 @@ func BackgroundRun(cmd *exec.Cmd, name string, res chan error) error {
 		} else {
 			log.Debug().Msgf("Background task %s completed", name)
 		}
-		res <-err
+		res <- err
 	}()
 
 	return nil

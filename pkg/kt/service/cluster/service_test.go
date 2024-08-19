@@ -1,17 +1,19 @@
 package cluster
 
 import (
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	testclient "k8s.io/client-go/kubernetes/fake"
 	"testing"
+
+	testclient "k8s.io/client-go/kubernetes/fake"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func TestKubernetes_CreateService(t *testing.T) {
 	type args struct {
-		name      string
-		namespace string
-		port      map[int]int
-		labels    map[string]string
+		name        string
+		namespace   string
+		port        map[int]int
+		labels      map[string]string
 		annotations map[string]string
 	}
 	tests := []struct {
@@ -24,7 +26,7 @@ func TestKubernetes_CreateService(t *testing.T) {
 			args: args{
 				name:      "svc-name",
 				namespace: "default",
-				port: map[int]int{8080:8080},
+				port:      map[int]int{8080: 8080},
 				labels: map[string]string{
 					"label": "value",
 				},
@@ -40,13 +42,13 @@ func TestKubernetes_CreateService(t *testing.T) {
 			}
 			_, err := k.CreateService(&SvcMetaAndSpec{
 				Meta: &ResourceMeta{
-					Name: tt.args.name,
-					Namespace: tt.args.namespace,
-					Labels: map[string]string{util.ControlBy: util.KubernetesToolkit},
+					Name:        tt.args.name,
+					Namespace:   tt.args.namespace,
+					Labels:      map[string]string{util.ControlBy: util.KubernetesToolkit},
 					Annotations: tt.args.annotations,
 				},
-				External: false,
-				Ports: tt.args.port,
+				External:  false,
+				Ports:     tt.args.port,
 				Selectors: tt.args.labels,
 			})
 			if (err != nil) != tt.wantErr {

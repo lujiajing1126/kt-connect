@@ -2,14 +2,16 @@ package cluster
 
 import (
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+
 	appV1 "k8s.io/api/apps/v1"
 	coreV1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func getKubernetesClient(kubeConfig string) (clientset *kubernetes.Clientset, err error) {
@@ -141,7 +143,7 @@ func createContainer(image string, args []string, envs map[string]string, ports 
 		},
 		Ports: []coreV1.ContainerPort{},
 		Resources: coreV1.ResourceRequirements{
-			Limits: coreV1.ResourceList{},
+			Limits:   coreV1.ResourceList{},
 			Requests: coreV1.ResourceList{},
 		},
 	}
@@ -150,8 +152,8 @@ func createContainer(image string, args []string, envs map[string]string, ports 
 	}
 	for name, port := range ports {
 		container.Ports = append(container.Ports, coreV1.ContainerPort{
-			Name: name,
-			Protocol: coreV1.ProtocolTCP,
+			Name:          name,
+			Protocol:      coreV1.ProtocolTCP,
 			ContainerPort: int32(port),
 		})
 	}

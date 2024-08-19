@@ -2,13 +2,15 @@ package exchange
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	appV1 "k8s.io/api/apps/v1"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	appV1 "k8s.io/api/apps/v1"
-	"strings"
 )
 
 func ByScale(resourceName string) error {

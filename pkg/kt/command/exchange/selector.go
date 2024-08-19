@@ -2,11 +2,13 @@ package exchange
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"strings"
 )
 
 func BySelector(resourceName string) error {
@@ -20,7 +22,7 @@ func BySelector(resourceName string) error {
 	}
 
 	// Lock service to avoid conflict, must be first step
-	svc, err = general.LockService(svc.Name, opt.Get().Global.Namespace, 0);
+	svc, err = general.LockService(svc.Name, opt.Get().Global.Namespace, 0)
 	if err != nil {
 		return err
 	}

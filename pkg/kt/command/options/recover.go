@@ -1,7 +1,6 @@
 package options
 
 func RecoverFlags() []OptionConfig {
-	flags := []OptionConfig{
-	}
+	flags := []OptionConfig{}
 	return flags
 }

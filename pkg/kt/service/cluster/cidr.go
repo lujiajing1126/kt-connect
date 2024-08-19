@@ -3,13 +3,15 @@ package cluster
 import (
 	"context"
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"strconv"
+	"strings"
+
 	"github.com/rs/zerolog/log"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	"strconv"
-	"strings"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // ClusterCidr get cluster CIDR
@@ -32,7 +34,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	apiServerIp := util.ExtractHostIp(opt.Store.RestConfig.Host)
 	log.Debug().Msgf("Using cluster IP %s", apiServerIp)
 
-	if opt.Store.Ipv6Cluster == true  && strings.Contains(apiServerIp, ":"){
+	if opt.Store.Ipv6Cluster == true && strings.Contains(apiServerIp, ":") {
 		apiServerIp = strings.Split(strings.Split(opt.Store.RestConfig.Host, "[")[1], "]")[0]
 	}
 
@@ -83,7 +85,7 @@ func (k *Kubernetes) ClusterCidr(namespace string) ([]string, []string) {
 	}
 
 	// remove ipv6 api address
-	if opt.Store.Ipv6Cluster == true  && strings.Contains(apiServerIp, ":") {
+	if opt.Store.Ipv6Cluster == true && strings.Contains(apiServerIp, ":") {
 		s := strings.Split(apiServerIp, ":")
 		ipmask := fmt.Sprintf("%s:%s::/32", s[0], s[1])
 		cidr = util.ArrayDelete(cidr, ipmask)

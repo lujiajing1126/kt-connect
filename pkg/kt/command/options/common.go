@@ -1,8 +1,9 @@
 package options
 
 import (
-	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/spf13/cobra"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func HideGlobalFlags(cmd *cobra.Command) {

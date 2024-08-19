@@ -2,6 +2,12 @@ package connect
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
+	"golang.org/x/net/proxy"
+
 	"github.com/alibaba/kt-connect/pkg/common"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
@@ -9,10 +15,6 @@ import (
 	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
 	"github.com/alibaba/kt-connect/pkg/kt/transmission"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"golang.org/x/net/proxy"
-	"strings"
-	"time"
 )
 
 func ByTun2Socks() error {
@@ -93,7 +95,7 @@ func startSocks5Connection(podIP, privateKey string, localSshPort int, isInitCon
 		// will hang here if not error happen
 		err := sshchannel.Ins().StartSocks5Proxy(privateKey, sshAddress, socks5Address)
 		if !gone {
-			res <-err
+			res <- err
 		}
 		log.Debug().Err(err).Msgf("Socks proxy interrupted")
 		if ticker != nil {

@@ -2,12 +2,14 @@ package transmission
 
 import (
 	"fmt"
+	"strings"
+	"time"
+
+	"github.com/rs/zerolog/log"
+
 	"github.com/alibaba/kt-connect/pkg/common"
 	"github.com/alibaba/kt-connect/pkg/kt/service/sshchannel"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"strings"
-	"time"
 )
 
 // ForwardPodToLocal mapping pod port to local port
@@ -67,7 +69,7 @@ func sshReverseTunnel(privateKey, remoteEndpoint, localEndpoint, sshAddress stri
 		if err != nil {
 			if res != nil {
 				log.Error().Err(err).Msgf("Failed to setup reverse tunnel")
-				res <-err
+				res <- err
 			} else {
 				log.Debug().Err(err).Msgf("Reverse tunnel interrupted")
 			}

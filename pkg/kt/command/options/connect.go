@@ -7,86 +7,86 @@ import (
 func ConnectFlags() []OptionConfig {
 	flags := []OptionConfig{
 		{
-			Target:      "Mode",
+			Target:       "Mode",
 			DefaultValue: util.ConnectModeTun2Socks,
-			Description: "Connect mode 'tun2socks' or 'sshuttle'",
+			Description:  "Connect mode 'tun2socks' or 'sshuttle'",
 		},
 		{
-			Target:      "DnsMode",
+			Target:       "DnsMode",
 			DefaultValue: util.DnsModeLocalDns,
-			Description: "Specify how to resolve service domains, can be 'localDNS', 'podDNS', 'hosts' or 'hosts:<namespaces>', for multiple namespaces use ',' separation",
+			Description:  "Specify how to resolve service domains, can be 'localDNS', 'podDNS', 'hosts' or 'hosts:<namespaces>', for multiple namespaces use ',' separation",
 		},
 		{
-			Target:      "ShareShadow",
+			Target:       "ShareShadow",
 			DefaultValue: false,
-			Description: "Use shared shadow pod",
+			Description:  "Use shared shadow pod",
 		},
 		{
-			Target:      "ClusterDomain",
+			Target:       "ClusterDomain",
 			DefaultValue: "cluster.local",
-			Description: "The cluster domain provided to kubernetes api-server",
+			Description:  "The cluster domain provided to kubernetes api-server",
 		},
 		{
-			Target:      "DisablePodIp",
+			Target:       "DisablePodIp",
 			DefaultValue: false,
-			Description: "Disable access to pod IP address",
+			Description:  "Disable access to pod IP address",
 		},
 		{
-			Target:      "SkipCleanup",
+			Target:       "SkipCleanup",
 			DefaultValue: false,
-			Description: "Do not auto cleanup residual resources in cluster",
+			Description:  "Do not auto cleanup residual resources in cluster",
 		},
 		{
-			Target:      "IncludeIps",
+			Target:       "IncludeIps",
 			DefaultValue: "",
-			Description: "Specify extra IP ranges which should be route to cluster, e.g. '172.2.0.0/16', use ',' separated",
+			Description:  "Specify extra IP ranges which should be route to cluster, e.g. '172.2.0.0/16', use ',' separated",
 		},
 		{
-			Target:      "ExcludeIps",
+			Target:       "ExcludeIps",
 			DefaultValue: "",
-			Description: "Do not route specified IPs to cluster, e.g. '192.168.64.2' or '192.168.64.0/24', use ',' separated",
+			Description:  "Do not route specified IPs to cluster, e.g. '192.168.64.2' or '192.168.64.0/24', use ',' separated",
 		},
 		{
-			Target:      "IngressIp",
+			Target:       "IngressIp",
 			DefaultValue: "",
-			Description: "Specify an IP address which all ingress domains should be resolve to",
+			Description:  "Specify an IP address which all ingress domains should be resolve to",
 		},
 		{
-			Target:      "DisableTunDevice",
+			Target:       "DisableTunDevice",
 			DefaultValue: false,
-			Description: "(tun2socks mode only) Create socks5 proxy without tun device",
+			Description:  "(tun2socks mode only) Create socks5 proxy without tun device",
 		},
 		{
-			Target:      "DisableTunRoute",
+			Target:       "DisableTunRoute",
 			DefaultValue: false,
-			Description: "(tun2socks mode only) Do not auto setup tun device route",
+			Description:  "(tun2socks mode only) Do not auto setup tun device route",
 		},
 		{
-			Target:      "ProxyPort",
+			Target:       "ProxyPort",
 			DefaultValue: 2223,
-			Description: "(tun2socks mode only) Specify the local port which socks5 proxy should use",
+			Description:  "(tun2socks mode only) Specify the local port which socks5 proxy should use",
 		},
 		{
-			Target:      "ProxyAddr",
+			Target:       "ProxyAddr",
 			DefaultValue: "127.0.0.1",
-			Description: "(tun2socks mode only) Specify the ip address or hostname which socks5 proxy should use",
+			Description:  "(tun2socks mode only) Specify the ip address or hostname which socks5 proxy should use",
 		},
 		{
-			Target:      "DnsCacheTtl",
+			Target:       "DnsCacheTtl",
 			DefaultValue: 60,
-			Description: "(local dns mode only) DNS cache refresh interval in seconds",
+			Description:  "(local dns mode only) DNS cache refresh interval in seconds",
 		},
 	}
 	if util.IsMacos() {
 		flags = append(flags,
-			OptionConfig {
-				Target:      "DnsPort",
+			OptionConfig{
+				Target:       "DnsPort",
 				DefaultValue: util.AlternativeDnsPort,
-				Description: "(local dns mode only) Specify local DNS port",
-			}, OptionConfig {
-				Target:      "IncludeDomains",
+				Description:  "(local dns mode only) Specify local DNS port",
+			}, OptionConfig{
+				Target:       "IncludeDomains",
 				DefaultValue: "",
-				Description: "Query domain names of specified suffixes via kt DNS, e.g. 'com', use ',' separated",
+				Description:  "Query domain names of specified suffixes via kt DNS, e.g. 'com', use ',' separated",
 			},
 		)
 	}

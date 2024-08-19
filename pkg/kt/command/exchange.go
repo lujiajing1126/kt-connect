@@ -2,25 +2,27 @@ package command
 
 import (
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/exchange"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	"strings"
 )
 
 // NewExchangeCommand return new exchange command
 func NewExchangeCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "exchange",
+		Use:   "exchange",
 		Short: "Redirect all requests of specified kubernetes service to local",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to exchange is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ",") )
+				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
@@ -35,7 +37,7 @@ func NewExchangeCommand() *cobra.Command {
 	return cmd
 }
 
-//Exchange exchange kubernetes workload
+// Exchange exchange kubernetes workload
 func Exchange(resourceName string) error {
 	ch, err := general.SetupProcess(util.ComponentExchange)
 	if err != nil {

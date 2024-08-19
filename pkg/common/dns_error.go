@@ -4,7 +4,7 @@ import "fmt"
 
 // DomainNotExistError ...
 type DomainNotExistError struct {
-	name string
+	name  string
 	qtype uint16
 }
 

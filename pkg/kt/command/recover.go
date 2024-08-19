@@ -3,28 +3,30 @@ package command
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
+
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/cobra"
+	appV1 "k8s.io/api/apps/v1"
+	coreV1 "k8s.io/api/core/v1"
+
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/command/recover"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"github.com/spf13/cobra"
-	appV1 "k8s.io/api/apps/v1"
-	coreV1 "k8s.io/api/core/v1"
-	"strings"
 )
 
 // NewRecoverCommand return new recover command
 func NewRecoverCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "recover",
+		Use:   "recover",
 		Short: "Restore traffic of specified kubernetes service changed by exchange or mesh",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to recover is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ",") )
+				return fmt.Errorf("too many service names are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			opt.Get().Global.UseLocalTime = true
 			return general.Prepare()

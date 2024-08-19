@@ -2,10 +2,12 @@ package config
 
 import (
 	"fmt"
+	"io/ioutil"
+
+	"github.com/rs/zerolog/log"
+
 	"github.com/alibaba/kt-connect/pkg/common"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"io/ioutil"
 )
 
 func ListProfile(args []string) error {
@@ -25,4 +27,3 @@ func ListProfile(args []string) error {
 	}
 	return nil
 }
-

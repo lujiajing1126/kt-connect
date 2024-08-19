@@ -3,14 +3,16 @@ package cluster
 import (
 	"context"
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"strings"
+
 	"github.com/rs/zerolog/log"
 	appV1 "k8s.io/api/apps/v1"
 	coreV1 "k8s.io/api/core/v1"
 	k8sErrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"strings"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // GetOrCreateShadow create shadow pod or deployment
@@ -246,4 +248,3 @@ func getSSHVolume(volume string) coreV1.Volume {
 	}
 	return sshVolume
 }
-

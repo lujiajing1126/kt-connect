@@ -1,18 +1,20 @@
 package cluster
 
 import (
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"reflect"
+	"strconv"
+	"strings"
+	"testing"
+
 	"github.com/stretchr/testify/require"
 	coreV1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	testclient "k8s.io/client-go/kubernetes/fake"
 	"k8s.io/client-go/rest"
-	"reflect"
-	"strconv"
-	"strings"
-	"testing"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 func TestKubernetes_ClusterCidr(t *testing.T) {

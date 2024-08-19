@@ -7,13 +7,13 @@ import (
 )
 
 const (
-	ResolvConf = "/etc/resolv.conf"
+	ResolvConf      = "/etc/resolv.conf"
 	FieldNameserver = "nameserver"
-	FieldDomain = "domain"
-	FieldSearch = "search"
+	FieldDomain     = "domain"
+	FieldSearch     = "search"
 
 	HostsFilePath = "/etc/hosts"
-	Eol = "\n"
+	Eol           = "\n"
 )
 
 var (

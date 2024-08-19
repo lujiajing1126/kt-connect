@@ -1,12 +1,14 @@
 package options
 
 import (
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"reflect"
 	"strconv"
+
+	"github.com/rs/zerolog/log"
+	"gopkg.in/yaml.v3"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // ConnectOptions ...

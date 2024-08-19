@@ -90,7 +90,7 @@ func ArrayDelete(arr []string, item string) []string {
 	if count == 0 {
 		return arr
 	}
-	newArr := make([]string, len(arr) - count)
+	newArr := make([]string, len(arr)-count)
 	i := 0
 	for _, v := range arr {
 		if v != item {

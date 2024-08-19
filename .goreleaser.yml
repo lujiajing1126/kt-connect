@@ -1,11 +1,11 @@
 # Make sure to check the documentation at http://goreleaser.com
+version: 2
 env:
-  - GO_VERSION=1.18
+  - GO_VERSION=1.22
 before:
   hooks:
     - make mod
     - bash build/scripts/wintun.sh
-    - bash build/scripts/docker.sh
 builds:
   - id: "ktctl"
     main: ./cmd/ktctl/main.go
@@ -22,21 +22,21 @@ builds:
       - CGO_ENABLED=0
   - id: "shadow"
     main: ./cmd/shadow/main.go
-    binary: artifacts/shadow/shadow-linux-amd64
+    binary: shadow
     goos:
       - linux
     goarch:
       - amd64
   - id: "router"
     main: ./cmd/router/main.go
-    binary: artifacts/router/router-linux-amd64
+    binary: router
     goos:
       - linux
     goarch:
       - amd64
   - id: "navigator"
     main: ./cmd/navigator/main.go
-    binary: artifacts/navigator/navigator-linux-amd64
+    binary: navigator
     goos:
       - linux
     goarch:
@@ -44,38 +44,41 @@ builds:
 dockers:
   - goos: linux
     goarch: amd64
+    use: buildx
     ids:
       - shadow
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:v{{ .Major }}"
-    dockerfile: artifacts/docker/shadow/Dockerfile
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:v{{ .Major }}"
+    dockerfile: build/docker/shadow/Dockerfile
     skip_push: false
     extra_files:
       - build/docker/shadow/run.sh
       - build/docker/shadow/disconnect.sh
   - goos: linux
     goarch: amd64
+    use: buildx
     ids:
       - router
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:v{{ .Major }}"
-    dockerfile: artifacts/docker/router/Dockerfile
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:v{{ .Major }}"
+    dockerfile: build/docker/router/Dockerfile
     skip_push: false
     extra_files:
       - build/docker/router/nginx.conf
   - goos: linux
     goarch: amd64
+    use: buildx
     ids:
       - navigator
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:v{{ .Major }}"
-    dockerfile: artifacts/docker/navigator/Dockerfile
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:v{{ .Major }}"
+    dockerfile: build/docker/navigator/Dockerfile
     skip_push: false
     extra_files:
       - build/docker/navigator/setup_iptables.sh
@@ -83,26 +86,30 @@ archives:
   - id: ktctl
     builds:
       - ktctl
-    name_template: 'ktctl_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+    name_template: >-
+      {{- .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else if eq .Arch "arm64" }}arm_64
+      {{- else }}{{ .Arch }}{{ end }}
     format: tar.gz
     format_overrides:
       - goos: windows
         format: zip
     files:
-      - src: 'artifacts/{{ .Os }}/{{ .Arch }}/*'
+      - src: >-
+          artifacts/
+          {{- title .Os }}/
+          {{- if eq .Arch "amd64" }}x86_64
+          {{- else if eq .Arch "386" }}i386
+          {{- else if eq .Arch "arm64" }}arm_64
+          {{- else }}{{ .Arch }}{{ end }}/*
         dst: .
         strip_parent: true
-    replacements:
-      darwin: MacOS
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
-      arm64: arm_64
 checksum:
   name_template: '{{ .Tag }}_checksums.txt'
-snapshot:
-  name_template: "SNAPSHOT"
 changelog:
   sort: asc
   filters:
@@ -112,7 +119,7 @@ changelog:
       - '^refactor:'
 release:
   github:
-    owner: alibaba
+    owner: lujiajing1126
     name: kt-connect
   ids:
     - ktctl

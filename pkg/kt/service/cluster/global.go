@@ -2,16 +2,18 @@ package cluster
 
 import (
 	"context"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
+	"strconv"
+	"strings"
+	"time"
+
 	appV1 "k8s.io/api/apps/v1"
 	coreV1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/cache"
-	"strconv"
-	"strings"
-	"time"
+
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 var apiTimeout int64 = 5
@@ -78,7 +80,7 @@ func (k *Kubernetes) watchResource(name, namespace, resourceType string, objType
 		objType,
 		0,
 		cache.ResourceEventHandlerFuncs{
-			AddFunc: func(obj any) { fAdd(obj) },
+			AddFunc:    func(obj any) { fAdd(obj) },
 			DeleteFunc: func(obj any) { fDel(obj) },
 			UpdateFunc: func(oldObj, newObj any) { fMod(newObj) },
 		},
@@ -93,7 +95,7 @@ func (k *Kubernetes) watchResource(name, namespace, resourceType string, objType
 }
 
 func isSingleIp(ipRange string) bool {
-	return !strings.Contains(ipRange, "/") || strings.Split(ipRange,"/")[1] == "32"
+	return !strings.Contains(ipRange, "/") || strings.Split(ipRange, "/")[1] == "32"
 }
 
 func decreaseRef(refCount string) (count string, err error) {

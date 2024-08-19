@@ -3,17 +3,19 @@ package general
 import (
 	"encoding/json"
 	"fmt"
-	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
-	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
-	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
-	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
-	"github.com/alibaba/kt-connect/pkg/kt/util"
-	"github.com/rs/zerolog/log"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/rs/zerolog/log"
+
+	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
+	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
+	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
+	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
 // CleanupWorkspace clean workspace
