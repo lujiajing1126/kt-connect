@@ -19,6 +19,10 @@ test:
 release:
 	goreleaser --snapshot --skip-publish --rm-dist
 
+.PHONY: format
+format:
+	goimports -local "github.com/alibaba/kt-connect" -w ./.
+
 # check the style
 check:
 	go vet ./pkg/... ./cmd/...
