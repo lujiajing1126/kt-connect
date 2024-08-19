@@ -48,9 +48,9 @@ dockers:
     ids:
       - shadow
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow:v{{ .Major }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-shadow:v{{ .Major }}"
     dockerfile: artifacts/docker/shadow/Dockerfile
     skip_push: false
     extra_files:
@@ -61,9 +61,9 @@ dockers:
     ids:
       - router
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router:v{{ .Major }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-router:v{{ .Major }}"
     dockerfile: artifacts/docker/router/Dockerfile
     skip_push: false
     extra_files:
@@ -73,9 +73,9 @@ dockers:
     ids:
       - navigator
     image_templates:
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:latest"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:{{ .Tag }}"
-      - "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator:v{{ .Major }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:latest"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:{{ .Tag }}"
+      - "ghcr.io/lujiajing1126/kt-connect/kt-connect-navigator:v{{ .Major }}"
     dockerfile: artifacts/docker/navigator/Dockerfile
     skip_push: false
     extra_files:
@@ -97,7 +97,13 @@ archives:
       - goos: windows
         format: zip
     files:
-      - src: 'artifacts/{{ .Os }}/{{ .Arch }}/*'
+      - src: >-
+          artifacts/
+          {{- title .Os }}/
+          {{- if eq .Arch "amd64" }}x86_64
+          {{- else if eq .Arch "386" }}i386
+          {{- else if eq .Arch "arm64" }}arm_64
+          {{- else }}{{ .Arch }}{{ end }}/*
         dst: .
         strip_parent: true
 checksum:
