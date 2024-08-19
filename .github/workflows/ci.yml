@@ -18,7 +18,7 @@ jobs:
           go-version-file: 'go.mod'
           cache-dependency-path: "**/*.sum"
       - name: Install dependencies
-        run: go get .
+        run: go get ./...
 
       - name: KinD (Kubernetes in Docker) Action
         uses: engineerd/setup-kind@v0.5.0
