@@ -111,7 +111,7 @@ changelog:
       - '^refactor:'
 release:
   github:
-    owner: alibaba
+    owner: lujiajing1126
     name: kt-connect
   ids:
     - ktctl
